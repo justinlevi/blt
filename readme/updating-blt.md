@@ -4,13 +4,15 @@
 
 If you are already using BLT via Composer, you can update to the latest version of BLT using composer.
 
-1. Run the following commands:
+1. To update to the latest version of BLT that is compatible with your existing dependencies, run the following commands:
 
-        # update blt and its dependencies
         composer update acquia/blt --with-dependencies
   
-   Rarely, the first command will fail with a version conflict. If this happens, run `composer update` so that Composer can try to resolve a new set of interoperable dependencies.
-
+1. Sometimes, the first command will fail to update to the latest version of BLT. This is typically because some other dependency prevents it. If this happens, run:
+ 
+        composer require acquia/blt:^[latest-version] --no-update && composer update
+         
+   Where `[latest-version]` is the latest version of BLT. E.g., `8.7.0`. This will cause Composer to update all of your dependencies (in accordance with your version constraints) and permit the latest version of BLT to be installed.
 1. Check the [release information](https://github.com/acquia/blt/releases) to see if there are special update instructions for the new version. 
 1. Review and commit changes to your project files.
 1. Rarely, you may need to refresh your local environment via `blt local:setup`. This will drop your local database and re-install Drupal.
@@ -26,24 +28,6 @@ By default BLT will modify a handful of files in your project to conform to the 
       }
 
 Please not that if you choose to do this, it is your responsibility to track upstream changes. This is very likely to cause issues when you upgrade BLT to a new version.
-
-### Modifying BLT's default Composer values
-
-BLT merges default values for composer.json using [wikimedia/composer-merge-plugin](https://github.com/wikimedia/composer-merge-plugin):
-
-        "merge-plugin": {
-            "require": [
-                "vendor/acquia/blt/composer.required.json",
-                "vendor/acquia/blt/composer.suggested.json"
-            ],
-            "merge-extra": true,
-            "merge-extra-deep": true,
-            "merge-scripts": true
-        },
-
-This merges the `require`, `require-dev`, `autoload`, `autoload-dev`, `scripts`, and `extra` keys from BLT's own vendored files. The merged values are split into two groups: required and suggested. You may remove the suggested packages by deleting the `vendor/acquia/blt/composer.suggested.json` line from your composer.json.
-
-You may also override the value for any key by defining a different value for the same key in your root composer.json.
 
 ## Updating from a non-Composer-managed (very old) version
 

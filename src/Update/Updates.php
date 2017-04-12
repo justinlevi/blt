@@ -6,10 +6,6 @@ use Acquia\Blt\Annotations\Update;
 
 /**
  * Defines scripted updates for specific version deltas of BLT.
- *
- * Note that every update should be designed to execute against *any* version of
- * blt given that a dev version of BLT will execute all updates regardless of
- * recency.
  */
 class Updates {
 
@@ -66,7 +62,7 @@ class Updates {
 
     // Change 'deploy' module key to 'prod'.
     // @see https://github.com/acquia/blt/pull/700.
-    $project_config = $this->updater->getProjectConfig();
+    $project_config = $this->updater->getProjectYml();
     if (!empty($project_config['modules']['deploy'])) {
       $project_config['modules']['prod'] = $project_config['modules']['deploy'];
       unset($project_config['modules']['deploy']);
@@ -162,22 +158,20 @@ class Updates {
   }
 
   /**
-   * 8.6.15.
+   * 8.7.0.
    *
    * @Update(
-   *   version = "8006015",
+   *   version = "8007000",
    *   description = "Updating composer.json to use wikimedia composer-merge-plugin."
    * )
    */
-  public function update_8006015() {
+  public function update_8007000() {
     $composer_required_json = $this->updater->getComposerRequiredJson();
     $composer_suggested_json = $this->updater->getComposerSuggestedJson();
     $composer_json = $this->updater->getComposerJson();
 
     // Remove deprecated config.
     unset($composer_json['extra']['blt']['composer-exclude-merge']);
-    // Remove config that should only be defined in composer.required.json.
-    unset($composer_json['extra']['enable-patching']);
 
     // Remove packages from root composer.json that are already defined in BLT's composer.required.json with matching version.
     if (!empty($composer_required_json['require'])) {
@@ -237,15 +231,6 @@ class Updates {
       unset($composer_json['autoload-dev']);
     }
 
-    // Remove redundant config for repositories.
-    if (!empty($composer_json['repositories']['drupal']) &&
-      $composer_json['repositories']['drupal'] == $composer_required_json['repositories']['drupal']) {
-      unset($composer_json['repositories']['drupal']);
-    }
-    if (empty($composer_json['repositories'])) {
-      unset($composer_json['repositories']);
-    }
-
     if (!empty($composer_json['scripts'])) {
       foreach ($composer_required_json['scripts'] as $script_name => $script) {
         if (array_key_exists($script_name, $composer_json['scripts'])) {
@@ -278,5 +263,15 @@ class Updates {
     $this->updater->getOutput()->writeln($formattedBlock);
     $this->updater->getOutput()->writeln("");
     $this->updater->getOutput()->writeln("<comment>Please execute `composer update` to incorporate these final automated changes to composer.json.</comment>");
+
+    // Sync updates to drushrc.php manually since it has been added to ignore-existing.txt.
+    $drushrcFile = 'drush/drushrc.php';
+    $this->updater->syncWithTemplate($drushrcFile, TRUE);
+
+    // Legacy versions will have defaulted to use features for config management.
+    // Must explicitly set formerly assumed value.
+    $project_yml = $this->updater->getProjectYml();
+    $project_yml['cm']['strategy'] = 'features';
+    $this->updater->writeProjectYml($project_yml);
   }
 }

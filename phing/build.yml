@@ -20,6 +20,8 @@ behat:
   verbose: ${blt.verbose}
   extra: ''
 
+bin.path: vendor/bin
+
 blt:
   update:
     ignore-existing-file: ${blt.root}/scripts/blt/ignore-existing.txt
@@ -38,22 +40,33 @@ composer:
   bin: ${repo.root}/${bin.path}
 
 cm:
+  # Possible values: core-only, config-split, features, none.
+  strategy: config-split
   core:
-    config-dir:
+    # The parent directory for configuration directories, relative to the docroot.
+    path: ../config
+    # The default config key to use for imports. This is the key used in Drupal's global $config_directories variable.
+    # E.g., $config_directories['sync']. It must have a corresponding key in cm.core.dirs. E.g., `cm.core.dirs.sync`.
+    key: sync
+    # A different config key is used by the deploy:update step, which is executed on Acquia Cloud.
+    deploy-key: vcs
+    dirs:
       # Corresponding values are defined in default.local.settings.php.
-      key: sync
-      path: ${repo.root}/config/default
-      # A different config key is used by the deploy:update step, which is executed on Acquia Cloud.
-      deploy-key: vcs
-    partial: true
-
+      sync:
+        path: ${cm.core.path}/default
+  features:
+    no-overrides: true
 
 deploy:
   # If true, dependencies will be built during deploy. If false, you should commit dependencies directly.
   build-dependencies: true
   dir: ${repo.root}/deploy
   exclude_file: ${blt.root}/phing/files/deploy-exclude.txt
+  exclude_additions_file: ${repo.root}/blt/deploy-exclude-additions.txt
   gitignore_file: ${blt.root}/phing/files/.gitignore
+  git:
+    # If true, deploys will fail if there are uncommitted changes.
+    failOnDirty: true
 
 # File and Directory locations.
 docroot.relative: ${repo.root.relative}/docroot
@@ -65,6 +78,8 @@ drupal:
   account.password: admin
   account.mail: no-reply@acquia.com
   locale: en
+  local_settings_file: ${docroot}/sites/default/settings/local.settings.php
+  settings_file: ${docroot}/sites/default/settings.php
 
 drush:
   bin: ${composer.bin}/drush

@@ -2,6 +2,27 @@
 
   <target name="deploy" description="Builds separate artifact and pushes to git.remotes defined project.yml.">
 
+    <!-- Check working tree state. -->
+    <exec dir="${repo.root}" command="status=$(git status --porcelain); echo ${#status};"
+          outputProperty="git.status.length" checkreturn="true"/>
+    <if>
+      <!-- Length will be a non-zero value if there are uncommitted changes. -->
+      <not><equals arg1="${git.status.length}" arg2="0"/></not>
+      <then>
+        <if>
+          <!-- Warn that there are uncommitted changes in this deploy. -->
+          <isfalse value="${deploy.git.failOnDirty}"/>
+          <then>
+            <echo level="warning">Deploy is being run with uncommitted changes.</echo>
+          </then>
+          <!-- Fail the deploy, the working tree must be clean. -->
+          <else>
+            <fail>There are uncommitted changes, commit or stash these changes before deploying.</fail>
+          </else>
+        </if>
+      </then>
+    </if>
+
     <!-- Build some defaults -->
     <exec command="git rev-parse --abbrev-ref HEAD" dir="${repo.root}" outputProperty="branch.current"/>
     <exec command="git log --oneline -1" dir="${repo.root}" outputProperty="deploy.commitMsg.last"/>
@@ -120,7 +141,8 @@
   </target>
 
   <target name="deploy:remote:pull" description="Checks out deploy branch from upstream remote." hidden="true">
-    <exec command="git fetch ${remoteName} ${deploy.branch}" dir="${deploy.dir}" logoutput="true" level="${blt.exec_level}" passthru="true"/>
+    <!-- Hide output in case branch does not exist on remote. Would emit misleading "fatal" error message. -->
+    <exec command="git fetch ${remoteName} ${deploy.branch}" dir="${deploy.dir}" logoutput="false" level="${blt.exec_level}" passthru="true"/>
 
     <!-- Create the new branch, "[source-branch-name]-build". -->
     <!-- We intentionally use checkreturn="false" in case the branch already exists. `git checkout -B` does not seem to work as advertised -->
@@ -143,9 +165,9 @@
 
     <if>
       <equals arg1="${simplesamlphp}" arg2="true"/>
-        <then>
-          <phingcall target="simplesamlphp:deploy:config"/>
-        </then>
+      <then>
+        <phingcall target="simplesamlphp:deploy:config"/>
+      </then>
     </if>
   </target>
 
@@ -203,8 +225,25 @@
   </target>
 
   <target name="deploy:copy" description="Copy required files from each /docroot/sites to /deploy/docroot/sites." hidden="true">
+    <property name="deploy.exclusions" value="${deploy.exclude_file}"/>
+    <!-- Check for existence of the exclude_additions_file. -->
+    <if>
+      <available file="${deploy.exclude_additions_file}"/>
+      <then>
+        <echo>Combining exclusions from deploy-exclude-additions and deploy-exclude files...</echo>
+        <exec dir="${repo.root}" command="${composer.bin}/blt-console text:munge ${deploy.exclude_file} ${deploy.exclude_additions_file} > ${deploy.exclude_file}.tmp" logoutput="true" checkreturn="true" level="${blt.exec_level}"/>
+        <property name="deploy.exclusions" value="${deploy.exclude_file}.tmp" override="true"/>
+      </then>
+    </if>
     <foreach list="${multisite.name}" param="multisite.name" target="deploy:copy:site:perms-writable"/>
-    <exec dir="${repo.root}" command="rsync -a --no-g --delete --delete-excluded --exclude-from=${deploy.exclude_file} ${repo.root}/ ${deploy.dir}/ --filter 'protect /.git/'" logoutput="true" checkreturn="true" level="${blt.exec_level}" passthru="true"/>
+    <exec dir="${repo.root}" command="rsync -a --no-g --delete --delete-excluded --exclude-from=${deploy.exclusions} ${repo.root}/ ${deploy.dir}/ --filter 'protect /.git/'" logoutput="true" checkreturn="true" level="${blt.exec_level}" passthru="true"/>
+    <if>
+      <available file="${deploy.exclude_file}.tmp"/>
+      <then>
+        <!-- Get rid of the temporary file we created. -->
+        <exec dir="${repo.root}" command="rm ${deploy.exclude_file}.tmp" logoutput="true" checkreturn="true" level="${blt.exec_level}" passthru="true"/>
+      </then>
+    </if>
     <foreach list="${multisite.name}" param="multisite.name" target="deploy:copy:site:perms-unwritable"/>
 
     <!-- Use our own .gitignore -->
@@ -216,10 +255,25 @@
     <exec command="git init ${deploy.dir}" logoutput="true" checkreturn="true" level="${blt.exec_level}" passthru="false"/>
     <exec dir="${deploy.dir}" command="git config --local core.excludesfile false" logoutput="true" checkreturn="true" level="${blt.exec_level}" passthru="true"/>
     <echo>Global .gitignore file is being disabled for this repository to prevent unexpected behavior.</echo>
+    <!-- Add the git username and email if necessary. -->
+    <if>
+      <and>
+        <isset property="git.user.name"/>
+        <isset property="git.user.email"/>
+      </and>
+      <then>
+        <exec dir="${deploy.dir}" command="git config --local --add user.email ${git.user.email} user.name ${git.user.name}" logoutput="true" checkreturn="true" level="${blt.exec_level}" passthru="true"/>
+      </then>
+    </if>
+
   </target>
 
   <target name="deploy:push-all" hidden="true">
     <foreach list="${git.remotes}" param="deploy.remote" target="deploy:push-remote"/>
+    <!--Allow custom commands to be run after deploy.-->
+    <phingcall target="target-hook:invoke">
+      <property name="hook-name" value="post-deploy"/>
+    </phingcall>
   </target>
 
   <target name="deploy:push-remote" description="Pushes to a git remote." hidden="true">
@@ -253,10 +307,11 @@
   </target>
 
   <target name="deploy:update:site" description="Update current database to reflect the state of the Drupal file system; uses local drush alias.">
+    <echo>Deploying updates to ${deploy.site.name}</echo>
     <phingcall target="setup:update">
       <!-- Drush fails to include some files. @see https://github.com/drush-ops/drush/issues/2497#issuecomment-279049111 -->
       <property name="drush.bin" value="${drush.bin} --include=../drush" override="true" />
-      <!-- Environment parameter is used to determine which modules to toggle. On ACE, will be overridden by one of dev/stage/prod. -->
+      <!-- Environment parameter is used to determine which modules to toggle. On ACE, will be overridden by one of dev/stage/prod via cloud hooks. -->
       <param name="environment" value="deploy"/>
       <!-- Disable alias since we are targeting specific uri. -->
       <property name="drush.alias" value=""/>
@@ -264,8 +319,9 @@
       <property name="drush.uri" value="${deploy.site.name}"/>
       <!-- Most sites store their version-controlled configuration in /config/default. -->
       <!-- ACE internally sets the vcs configuration directory to /config/default, so we use that. -->
-      <property name="cm.core.config-dir.key" value="${cm.core.config-dir.deploy-key}"/>
+      <property name="cm.core.key" value="${cm.core.deploy-key}"/>
     </phingcall>
+    <echo>Finished deploying updates to ${deploy.site.name}</echo>
   </target>
 
   <target name="deploy:tag" description="Tag repository.">
@@ -275,28 +331,5 @@
 
   <target name="deploy:drupal:install"
           description="Installs a specific Drupal site."
-          depends="setup:hash-salt">
-
-      <if>
-        <istrue value="${drush.verbose}"/>
-        <then>
-          <echo>Printing drush status</echo>
-          <drush command="status"/>
-        </then>
-      </if>
-
-      <echo>Installing Drupal.</echo>
-      <drush command="site-install">
-          <option name="site-name">"${project.human_name}"</option>
-          <option name="site-mail">"${drupal.account.mail}"</option>
-          <option name="account-name">"${drupal.account.name}"</option>
-          <option name="account-pass">"${drupal.account.password}"</option>
-          <option name="account-mail">"${drupal.account.mail}"</option>
-          <param>"${project.profile.name}"</param>
-          <param>"install_configure_form.update_status_module='array(FALSE,FALSE)'"</param>
-      </drush>
-
-      <phingcall target="deploy:update"/>
-
-  </target>
+          depends="drupal:install, deploy:update" />
 </project>

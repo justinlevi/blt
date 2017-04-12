@@ -64,6 +64,7 @@
 *.OTF     -text diff
 *.eot     -text diff
 *.EOT     -text diff
+*.woff    -text diff
 *.woff2   -text diff
 *.WOFF2   -text diff
 *.swf     -text diff
@@ -71,6 +72,7 @@
 *.db      -text diff
 *.DB      -text diff
 *.tar     -text diff
+*.tgz     -text diff
 *.TAR     -text diff
 *.pdf     -text diff
 *.PDF     -text diff

@@ -46,10 +46,12 @@ install:
 script:
   - source ${BLT_DIR}/scripts/blt/ci/internal/smoke_tests.sh
   - source ${BLT_DIR}/scripts/blt/ci/internal/create_blt_project.sh
-  - source ${BLT_DIR}/scripts/travis/run_tests
-  - source ${BLT_DIR}/scripts/blt/ci/internal/doctor.sh
-  - phpunit ${BLT_DIR}/tests/phpunit --group blt-project -c ${BLT_DIR}/tests/phpunit/phpunit.xml
-  - phpunit ${BLT_DIR}/tests/phpunit --group blt-multisite -c ${BLT_DIR}/tests/phpunit/phpunit.xml
+  - source ${BLT_DIR}/scripts/blt/ci/internal/run_tests.sh
+  # Add Drupal VM config to repo.
+  - blt vm --no-boot --no-interaction --yes
+  # Execute PHP Unit tests.
+  - ./vendor/bin/phpunit ${BLT_DIR}/tests/phpunit --group blt-project -c ${BLT_DIR}/tests/phpunit/phpunit.xml
+  - ./vendor/bin/phpunit ${BLT_DIR}/tests/phpunit --group blt-multisite -c ${BLT_DIR}/tests/phpunit/phpunit.xml
   # Deploy build artifact.
   - blt deploy:build
   - source ${BLT_DIR}/scripts/blt/ci/internal/test_artifact.sh
@@ -68,6 +70,9 @@ before_deploy:
   - echo "[![Build Status](https://travis-ci.org/acquia-pso/blted8.svg?branch=8.x)](https://travis-ci.org/acquia-pso/blted8)" >> README.md
   - git add -A
   - git commit -m "Automated commit for BLT repo by Travis CI for Build ${TRAVIS_BUILD_ID}" -n
+
+after_success:
+  # - ./vendor/bin/coveralls -vvv
 
 deploy:
   - provider: script

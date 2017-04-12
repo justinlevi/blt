@@ -26,6 +26,7 @@ drupal_build_composer: false
 drupal_composer_path: false
 drupal_composer_install_dir: "/var/www/${project.machine_name}"
 drupal_core_path: "{{ drupal_composer_install_dir }}/docroot"
+ssh_home: /var/www/${project.machine_name}
 
 drupal_db_user: drupal
 drupal_db_password: drupal
@@ -74,6 +75,5 @@ php_xdebug_idekey: PHPSTORM
 php_xdebug_max_nesting_level: 256
 php_xdebug_remote_port: "9000"
 
-post_provision_tasks_dir: "../../../acquia/blt/scripts/drupal-vm/post-provision.yml"
 post_provision_scripts:
   - "../../../acquia/blt/scripts/drupal-vm/post-provision.sh"

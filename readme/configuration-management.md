@@ -70,13 +70,45 @@ We need to find a better way of preventing this than manually monitoring module 
 
 ## Configuration Split workflow
 
-BLT recommends using the Config Split module to manage configuration on most projects. For a description of how to use Config Split, see this excellent [blog post by Jeff Geerling](https://www.jeffgeerling.com/blog/2017/adding-configuration-split-drupal-site-using-blt-and-acquia-cloud).
+### Overview
 
-Note that this workflow currently has two major limitations. The first is that individual configurations can't be entirely excluded from configuration management. For instance, if you want administrators to be able to set the site name (as above) or create new contact forms / webforms in production, this would be difficult given the current state of the module. However, this should theoretically be possible.
+BLT recommends using the Config Split module to manage configuration on most projects. For an overview of how to use Config Split, see this excellent [blog post by Jeff Geerling](https://www.jeffgeerling.com/blog/2017/adding-configuration-split-drupal-site-using-blt-and-acquia-cloud).
 
-TODO: Update this documentation once Config Split's greylist functionality has been better documented and tested.
+The only limitation of Config Split is that it's difficult to define configuration that varies between sites in a multisite installation. Multisite installations that require highly customized bundles of configuration per-site might be better suited by a Features-based workflow.
 
-The second limitation is that it's difficult to define configuration that varies between sites in a multisite installation. Multisite installations that require highly customized bundles of configuration per-site might be better suited by a Features-based workflow.
+### Setting up Config Split
+
+BLT uses Config Split for configuration management by default, so if you haven't modified BLT defaults, you should be good to go!
+
+If for some reason BLT is not working with Config Split, ensure that you are using Drush version 8.1.10 or higher, Config Split version 8.1.0-beta4 or higher, and that `cm.strategy` is set to `config-split` in `blt/project.yml`.
+
+### Using Config Split to capture and deploy configuration
+
+BLT and Config Split together make it easy to capture configuration changes in code and deploy those changes to a remote environment.
+
+BLT automatically enables the following config splits in the following environments:
+
+| Split    | Environment
+|----------|----------------------------------------------
+| local    | any non-Acquia, non-Travis environment
+| ci       | Acquia Pipelines OR Travis CI
+| dev      | Acquia Dev
+| stage    | Acquia Staging
+| prod     | Acquia Prod
+| ah_other | any Acquia environment not listed above
+
+As a prerequisite, make sure your BLT-based project is set up to use Config Split (see section above).
+
+To capture and deploy configuration changes using Config Split:
+
+1. Ensure that your local environment is up to date and refreshed (e.g. `git pull` and `blt local:refresh`).
+2. Use the Drupal UI to make the necessary configuration changes in your local environment. For instance, go to http://local.example.com/admin/structure/types/add to add a new content type.
+3. Once you have completed local development, use `drush cex` (`config-export`) to export your configuration changes to the `config/default` directory. Remember to use an appropriate alias if you are using a VM (e.g. `drush @example.local cex`).
+4. Review the updated configuration in `config/default` using `git diff`.  If you are satisfied with the changes, commit them and open a pull request.
+
+Note that when you run `drush cex`, if the project has been configured correctly, some configuration that's specific to the development environment should automatically be excluded. If you need to customize this behavior, you can modify the blacklists by following the steps in the section above.
+
+Similarly, some configuration that's intended to be "unlocked" in production might also be excluded (such as webforms). If you need to customize this behavior, you can use the greylist functionality described in [this blog post](https://blog.liip.ch/archive/2017/04/07/advanced-drupal-8-cmi-workflows.html).
 
 ## Features-based workflow
 
@@ -85,6 +117,8 @@ Features allows you to bundle related configuration files (such as a content typ
 Because of this more modular architecture, Features can be a better solution for certain multisite applications where functionality needs to be customized on a per-site basis. For instance, if you have a number of content types exported as separate features, but a given site only needs a subset of those content types, you could disable the unused features to make for a cleaner content editing experience. This also has the advantage of logically grouping functionality and custom code alongside its corresponding configuration.
 
 However, the downside to this more granular approach is that Features cannot make some of the same assumptions as the core configuration system, and relies much more heavily on the developer to manage the architecture and handle configuration changes that it can't. This makes the overall system much more error-prone and more of a burden to maintain.
+
+To set up a Features-based workflow, you'll need to set `cm.strategy` to `features` in `blt/project.yml`.
 
 ### Using bundles
 Features lets you define custom "bundles" that essentially let you train Features to support your project's individual workflow. At the most basic level, they are a way to namespace your features, so you'd want to choose a bundle name based on your project name (an "Acme" bundle would prefix all of your feature machine names with "acme_").

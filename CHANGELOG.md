@@ -1,5 +1,229 @@
 # Change Log
 
+## [8.8.1](https://github.com/acquia/blt/tree/8.8.1) (2017-04-11)
+[Full Changelog](https://github.com/acquia/blt/compare/8.8.0...8.8.1)
+
+**Implemented enhancements:**
+
+- Killing web driver more surgically. [\#1365](https://github.com/acquia/blt/pull/1365) ([grasmash](https://github.com/grasmash))
+- Fixes \#1363 - Currently not possibl to hook into post deploy [\#1364](https://github.com/acquia/blt/pull/1364) ([kylebrowning](https://github.com/kylebrowning))
+- Execute all VM commands from repo root. [\#1362](https://github.com/acquia/blt/pull/1362) ([grasmash](https://github.com/grasmash))
+
+**Fixed bugs:**
+
+- Disable update module at install time. [\#1360](https://github.com/acquia/blt/pull/1360) ([danepowell](https://github.com/danepowell))
+
+**Closed issues:**
+
+- Currently not possible to hook into post deploy [\#1363](https://github.com/acquia/blt/issues/1363)
+
+
+## [8.8.0](https://github.com/acquia/blt/tree/8.8.0) (2017-04-11)
+[Full Changelog](https://github.com/acquia/blt/compare/8.7.1...8.8.0)
+
+**Implemented enhancements:**
+
+- Fixes #1355: Make Drush alias for 'local' work in VM guest or host by default. [\#1356](https://github.com/acquia/blt/pull/1356)
+- Support CDEs for config splits [\#1311](https://github.com/acquia/blt/issues/1311)
+- Deploy can be run with uncommitted changes [\#1276](https://github.com/acquia/blt/issues/1276)
+- Let phing recognize git environment variables [\#1249](https://github.com/acquia/blt/issues/1249)
+- Allow deploy-exclude-additions.txt to be defined [\#1246](https://github.com/acquia/blt/issues/1246)
+- Force tests:behat to be executed inside VM, if DVM is used. [\#1359](https://github.com/acquia/blt/pull/1359) ([grasmash](https://github.com/grasmash))
+- Update notifications not disabled during Drupal 8.3.x installation [\#1353](https://github.com/acquia/blt/pull/1353) ([danepowell](https://github.com/danepowell))
+- Add QA Accounts module [\#1351](https://github.com/acquia/blt/pull/1351) ([danepowell](https://github.com/danepowell))
+- Fixes \#1276: Fail deploys with uncommitted changes. [\#1348](https://github.com/acquia/blt/pull/1348) ([bobbygryzynger](https://github.com/bobbygryzynger))
+- Running Robo tests during internal CI. [\#1347](https://github.com/acquia/blt/pull/1347) ([grasmash](https://github.com/grasmash))
+- Porting vm:\* commands to Robo. [\#1337](https://github.com/acquia/blt/pull/1337) ([grasmash](https://github.com/grasmash))
+- Fix local warnings about trusted host pattern [\#1335](https://github.com/acquia/blt/pull/1335) ([danepowell](https://github.com/danepowell))
+- Removing search\_api from suggested modules. [\#1334](https://github.com/acquia/blt/pull/1334) ([grasmash](https://github.com/grasmash))
+- Fixes \#1317: Change doctrine/common to ^2.5 after Drupal 8.3.\* released. [\#1333](https://github.com/acquia/blt/pull/1333) ([grasmash](https://github.com/grasmash))
+- Fixes \#1322: Examples.feature changes overwritten whenever BLT is updated. [\#1332](https://github.com/acquia/blt/pull/1332) ([grasmash](https://github.com/grasmash))
+- Fixes \#1324: Add ah\_other config split. [\#1331](https://github.com/acquia/blt/pull/1331) ([grasmash](https://github.com/grasmash))
+- Fixes \#1246: Allow deploy-exclude-additions.txt to be defined [\#1327](https://github.com/acquia/blt/pull/1327) ([malikkotob](https://github.com/malikkotob))
+
+**Fixed bugs:**
+
+- Travis email error starting with Drupal 8.3.0 and Lightning 2.1.0 [\#1336](https://github.com/acquia/blt/issues/1336)
+- manual build and deploy process fails if git user.useConfigOnly option is set [\#53](https://github.com/acquia/blt/issues/53)
+- Fix broken core-only config strategy [\#1358](https://github.com/acquia/blt/pull/1358) ([bkosborne](https://github.com/bkosborne))
+- Fixes \#1336: Travis email error starting with Drupal 8.3.0 and Lightning 2.1.0. [\#1338](https://github.com/acquia/blt/pull/1338) ([grasmash](https://github.com/grasmash))
+
+**Closed issues:**
+
+- What to do if using Config Split with the RA environment? [\#1324](https://github.com/acquia/blt/issues/1324)
+- Examples.feature changes overwritten whenever BLT is updated [\#1322](https://github.com/acquia/blt/issues/1322)
+- Change doctrine/common to ^2.5 after Drupal 8.3.\* released [\#1317](https://github.com/acquia/blt/issues/1317)
+- Complete Branching and Tagging documentation [\#1257](https://github.com/acquia/blt/issues/1257)
+
+**Misc merged pull requests**
+
+- Update configuration-management.md [\#1352](https://github.com/acquia/blt/pull/1352) ([danepowell](https://github.com/danepowell))
+- Issue \#53: Added support for custom git username and email [\#1323](https://github.com/acquia/blt/pull/1323) ([danepowell](https://github.com/danepowell))
+- Fixes \#1257 Complete branching and tagging documentation [\#1321](https://github.com/acquia/blt/pull/1321) ([malikkotob](https://github.com/malikkotob))
+- Minor cleanup of configuration-management.md [\#1319](https://github.com/acquia/blt/pull/1319) ([danepowell](https://github.com/danepowell))
+
+
+## [8.7.1](https://github.com/acquia/blt/tree/8.7.1) (2017-04-05)
+[Full Changelog](https://github.com/acquia/blt/compare/8.7.0...8.7.1)
+
+- Removed drupal/console from composer.required.json.
+
+
+## [8.7.0](https://github.com/acquia/blt/tree/8.7.0) (2017-04-05)
+[Full Changelog](https://github.com/acquia/blt/compare/8.7.0-beta4...8.7.0)
+
+**Fixed bugs:**
+
+- Ensuring that enable-patching remains in root composer.json. [\#1315](https://github.com/acquia/blt/pull/1315) ([grasmash](https://github.com/grasmash))
+
+**Misc merged pull requests**
+
+- Updating config split docs. [\#1316](https://github.com/acquia/blt/pull/1316) ([grasmash](https://github.com/grasmash))
+
+
+## [8.7.0-beta4](https://github.com/acquia/blt/tree/8.7.0-beta4) (2017-04-04)
+[Full Changelog](https://github.com/acquia/blt/compare/8.7.0-beta3...8.7.0-beta4)
+
+**Implemented enhancements:**
+
+- Standardizing config split stage name [\#1314](https://github.com/acquia/blt/pull/1314) ([grasmash](https://github.com/grasmash))
+- Fixing split import for CI. [\#1312](https://github.com/acquia/blt/pull/1312) ([grasmash](https://github.com/grasmash))
+- Changing include order of cloud settings files. [\#1310](https://github.com/acquia/blt/pull/1310) ([grasmash](https://github.com/grasmash))
+- BLT-1304: Fixes \#1304 default no cache setting for SAML. [\#1306](https://github.com/acquia/blt/pull/1306) ([kylebrowning](https://github.com/kylebrowning))
+
+**Fixed bugs:**
+
+- $BLT\_DIR/scripts/travis/deploy\_branch running on TravisCI results in error [\#1308](https://github.com/acquia/blt/issues/1308)
+- Running blt deploy:drupal:install -Denvironment=$target\_env -Dblt.verbose=true on cloud results in error [\#1307](https://github.com/acquia/blt/issues/1307)
+- SimpleSAMLPHP defines NO\_CACHE by default. [\#1304](https://github.com/acquia/blt/issues/1304)
+- Final setup:config-import:config-split not being run on blt local:setup [\#1303](https://github.com/acquia/blt/issues/1303)
+- Fixes \#1307: Specify sync config directory for config import. [\#1309](https://github.com/acquia/blt/pull/1309) ([arknoll](https://github.com/arknoll))
+- Fixes \#1303: config split import test. [\#1305](https://github.com/acquia/blt/pull/1305) ([arknoll](https://github.com/arknoll))
+
+
+## [8.7.0-beta3](https://github.com/acquia/blt/tree/8.7.0-beta3) (2017-04-03)
+[Full Changelog](https://github.com/acquia/blt/compare/8.7.0-beta2...8.7.0-beta3)
+
+**Implemented enhancements:**
+
+- Loading databases for each multisite [\#1227](https://github.com/acquia/blt/issues/1227)
+- Don't run drush updb with the entity-updates flag during setup:config-import, it's dangerous [\#1014](https://github.com/acquia/blt/issues/1014)
+- Connects to \#678: Set config sync dir correctly, despite ACE defaults. [\#1299](https://github.com/acquia/blt/pull/1299) ([grasmash](https://github.com/grasmash))
+- Fixes \#1014: Don't run drush entity-updates during config-import. [\#1293](https://github.com/acquia/blt/pull/1293) ([grasmash](https://github.com/grasmash))
+- Temporarily pinning to search\_api 1.0-beta4. [\#1291](https://github.com/acquia/blt/pull/1291) ([grasmash](https://github.com/grasmash))
+- Fixes \#1273: Set web driver to Phantom js in vm:init. [\#1290](https://github.com/acquia/blt/pull/1290) ([grasmash](https://github.com/grasmash))
+- Fixes \#1286: Silence git output when it may output fatal errors. [\#1289](https://github.com/acquia/blt/pull/1289) ([grasmash](https://github.com/grasmash))
+- Fixes \#1227: Add target to sync all local multisite dbs. [\#1229](https://github.com/acquia/blt/pull/1229) ([grasmash](https://github.com/grasmash))
+
+**Fixed bugs:**
+
+- Travis deploy\_branch failing on 8.7.0-beta2 [\#1300](https://github.com/acquia/blt/issues/1300)
+- composer merge + composer patches not playing nicely [\#1292](https://github.com/acquia/blt/issues/1292)
+- Drupal install fails with error when using VM [\#1283](https://github.com/acquia/blt/issues/1283)
+- Fixes \#1300: Travis deploy\_branch failing on 8.7.0-beta2. [\#1301](https://github.com/acquia/blt/pull/1301) ([grasmash](https://github.com/grasmash))
+- Fix undefined index when running remote drush commands [\#1295](https://github.com/acquia/blt/pull/1295) ([danepowell](https://github.com/danepowell))
+- Fixes \#1292: composer merge + composer patches not playing nicely. [\#1294](https://github.com/acquia/blt/pull/1294) ([grasmash](https://github.com/grasmash))
+- Fixes \#1283: Drupal install fails with error when using VM [\#1288](https://github.com/acquia/blt/pull/1288) ([grasmash](https://github.com/grasmash))
+
+**Closed issues:**
+
+- Latest BLT causes local:refresh to fail [\#1284](https://github.com/acquia/blt/issues/1284)
+- Set web driver to Phantom js in vm:init [\#1273](https://github.com/acquia/blt/issues/1273)
+
+**Misc merged pull requests**
+
+- Revert "Fixes \#1286: Silence git output when it may output fatal errors." [\#1296](https://github.com/acquia/blt/pull/1296) ([grasmash](https://github.com/grasmash))
+- Moving composer repos to root composer.json. [\#1287](https://github.com/acquia/blt/pull/1287) ([grasmash](https://github.com/grasmash))
+- Fixes \#1284: Local refresh db sync target needs to account for Drush alias. [\#1285](https://github.com/acquia/blt/pull/1285) ([geerlingguy](https://github.com/geerlingguy))
+- Trying to fix BLT doctor for when Drupal is not installed. [\#1254](https://github.com/acquia/blt/pull/1254) ([grasmash](https://github.com/grasmash))
+
+
+## [8.7.0-beta2](https://github.com/acquia/blt/tree/8.7.0-beta2) (2017-03-31)
+[Full Changelog](https://github.com/acquia/blt/compare/8.7.0-beta1...8.7.0-beta2)
+
+**Implemented enhancements:**
+
+- Skip config import if config directory is empty [\#1272](https://github.com/acquia/blt/issues/1272)
+- Make post-provision.sh script less opinionated [\#1264](https://github.com/acquia/blt/issues/1264)
+- deploy:drupal:install doesn't work with config management [\#1247](https://github.com/acquia/blt/issues/1247)
+- DrupalConsoleTask.php [\#1237](https://github.com/acquia/blt/issues/1237)
+- Scripts called from BLT's hooks don't have access to internal variables [\#1232](https://github.com/acquia/blt/issues/1232)
+- Add default patch for memcache to permit ODE integration [\#1224](https://github.com/acquia/blt/issues/1224)
+- Adjust BLT's Config Split workflow for new Config Filter approach [\#1138](https://github.com/acquia/blt/issues/1138)
+- Git pre-commit hook is slow [\#1104](https://github.com/acquia/blt/issues/1104)
+- Connects to \#1028: Auto-discovery of $site\_dir [\#1086](https://github.com/acquia/blt/issues/1086)
+- Multisite setup improvements [\#1028](https://github.com/acquia/blt/issues/1028)
+- Fixes \#1138: Support Config Split for environment-specific Core CMI [\#965](https://github.com/acquia/blt/issues/965)
+- .gitignore customizations overridden during BLT upgrade [\#915](https://github.com/acquia/blt/issues/915)
+- Cloud hooks for ACSF [\#853](https://github.com/acquia/blt/issues/853)
+- Make deployments fail when composer patches do not apply [\#705](https://github.com/acquia/blt/issues/705)
+- Add node\_modules and bower\_components to yaml fileset excludes. [\#1280](https://github.com/acquia/blt/pull/1280) ([devert](https://github.com/devert))
+- Add additional output during deployments. [\#1277](https://github.com/acquia/blt/pull/1277) ([bobbygryzynger](https://github.com/bobbygryzynger))
+- Checking for config prior to import. [\#1275](https://github.com/acquia/blt/pull/1275) ([grasmash](https://github.com/grasmash))
+- Instruct local files sync to exclude image styles as well as the css/js cache folders [\#1267](https://github.com/acquia/blt/pull/1267) ([bkosborne](https://github.com/bkosborne))
+- Fixes \#1264: Make post-provision.sh script more flexible. [\#1266](https://github.com/acquia/blt/pull/1266) ([geerlingguy](https://github.com/geerlingguy))
+- Fixes \#915: Sync drushrc.php with template drushrc.php via update hook. [\#1265](https://github.com/acquia/blt/pull/1265) ([malikkotob](https://github.com/malikkotob))
+- Connects to \#915: Move config from template drushrc into vendor drushrc. [\#1261](https://github.com/acquia/blt/pull/1261) ([malikkotob](https://github.com/malikkotob))
+- Connects to \#915: .gitignore customizations overridden. [\#1256](https://github.com/acquia/blt/pull/1256) ([malikkotob](https://github.com/malikkotob))
+- Moving drush files from template into vendor. [\#1253](https://github.com/acquia/blt/pull/1253) ([grasmash](https://github.com/grasmash))
+- Changing config management to be opt-in. [\#1251](https://github.com/acquia/blt/pull/1251) ([grasmash](https://github.com/grasmash))
+- Add \*.tgz directive to .gitattributes [\#1248](https://github.com/acquia/blt/pull/1248) ([TravisCarden](https://github.com/TravisCarden))
+- Fixes \#1104: Git pre-commit hook is slow. [\#1242](https://github.com/acquia/blt/pull/1242) ([malikkotob](https://github.com/malikkotob))
+- Update .gitattributes \(Woff files are binary\) [\#1238](https://github.com/acquia/blt/pull/1238) ([danepowell](https://github.com/danepowell))
+- Fixes \#1224: Add patch for memcache SASL Support, supports ODEs. [\#1230](https://github.com/acquia/blt/pull/1230) ([grasmash](https://github.com/grasmash))
+- Fixes \#1225: Move cweagans/composer-patches to composer.required.json. [\#1226](https://github.com/acquia/blt/pull/1226) ([grasmash](https://github.com/grasmash))
+- Adding blt/composer.overrides.json. [\#1221](https://github.com/acquia/blt/pull/1221) ([grasmash](https://github.com/grasmash))
+- Fixes \#1212: Make Acquia Cloud hooks opt-in. [\#1219](https://github.com/acquia/blt/pull/1219) ([malikkotob](https://github.com/malikkotob))
+- Fix Selenium failure due to insufficient entropy [\#1211](https://github.com/acquia/blt/pull/1211) ([fiasco](https://github.com/fiasco))
+- Add Cloud hooks for ACSF  [\#1209](https://github.com/acquia/blt/pull/1209) ([lcatlett](https://github.com/lcatlett))
+- Fixes \#705: Make deployments fail when composer patches do not apply. [\#1205](https://github.com/acquia/blt/pull/1205) ([grasmash](https://github.com/grasmash))
+- Adding support for config\_split. [\#1102](https://github.com/acquia/blt/pull/1102) ([grasmash](https://github.com/grasmash))
+
+**Fixed bugs:**
+
+- Default project.yml of blt suggests to work with devel module that is not present in the file system [\#1258](https://github.com/acquia/blt/issues/1258)
+- Build fails on blt vm:nuke if nuked previously [\#1213](https://github.com/acquia/blt/issues/1213)
+- Fixing mixed up run\_tests scripts. [\#1282](https://github.com/acquia/blt/pull/1282) ([grasmash](https://github.com/grasmash))
+- Fixing deploy:update target. [\#1281](https://github.com/acquia/blt/pull/1281) ([grasmash](https://github.com/grasmash))
+- Fixing post-provision script for Drupal VM. [\#1274](https://github.com/acquia/blt/pull/1274) ([grasmash](https://github.com/grasmash))
+- Fixes \#1258: Move devel to require in composer.required.json [\#1270](https://github.com/acquia/blt/pull/1270) ([malikkotob](https://github.com/malikkotob))
+- Fixes \#1247: deploy:drupal:install doesn't work with config management [\#1268](https://github.com/acquia/blt/pull/1268) ([malikkotob](https://github.com/malikkotob))
+- Fixes \#1262: Set Drupal VM's ssh\_home. [\#1263](https://github.com/acquia/blt/pull/1263) ([geerlingguy](https://github.com/geerlingguy))
+- Fixing update hook version for 8.7.0. [\#1252](https://github.com/acquia/blt/pull/1252) ([grasmash](https://github.com/grasmash))
+- Fixes \#1243: deployment failures caused by config\_split. [\#1244](https://github.com/acquia/blt/pull/1244) ([grasmash](https://github.com/grasmash))
+- Fixes \#1235: Pipelines builds failing due to composer self-update [\#1236](https://github.com/acquia/blt/pull/1236) ([geerlingguy](https://github.com/geerlingguy))
+- Working around compser-merge-plugin replace bug. [\#1233](https://github.com/acquia/blt/pull/1233) ([grasmash](https://github.com/grasmash))
+- Fixes \#1215: Projects can't define post\_provision\_tasks\_dir. [\#1231](https://github.com/acquia/blt/pull/1231) ([grasmash](https://github.com/grasmash))
+- Fix acquia/lightning version constraint. [\#1228](https://github.com/acquia/blt/pull/1228) ([grasmash](https://github.com/grasmash))
+- Fixing PhantomJS installer version constraint, removing operators. [\#1223](https://github.com/acquia/blt/pull/1223) ([grasmash](https://github.com/grasmash))
+- Making sites/\[site-name\] writable for setup:drush:settings target. [\#1222](https://github.com/acquia/blt/pull/1222) ([grasmash](https://github.com/grasmash))
+- Fixes \#1213: Build fails on blt vm:nuke if nuked previously. [\#1217](https://github.com/acquia/blt/pull/1217) ([grasmash](https://github.com/grasmash))
+
+**Closed issues:**
+
+- Exclude node\_modules and bower\_components from validate:yaml [\#1279](https://github.com/acquia/blt/issues/1279)
+- Deploy can be run with uncommitted changes [\#1276](https://github.com/acquia/blt/issues/1276)
+- Set Drupal VM's 'ssh\_home' [\#1262](https://github.com/acquia/blt/issues/1262)
+- Deployment failures caused by config\_split [\#1243](https://github.com/acquia/blt/issues/1243)
+- Pipelines builds failing due to `composer self-update` [\#1235](https://github.com/acquia/blt/issues/1235)
+- Move cweagans/composer-patches to composer.required.json. [\#1225](https://github.com/acquia/blt/issues/1225)
+- Update acsf-setup.md with subprofile guidance instead of lightning.extend.yml [\#1218](https://github.com/acquia/blt/issues/1218)
+- Make Acquia Cloud hooks opt-in [\#1212](https://github.com/acquia/blt/issues/1212)
+- Behat failures with Selenium [\#1210](https://github.com/acquia/blt/issues/1210)
+
+**Misc merged pull requests**
+
+- Fixes \#1276: Ensure there are no uncommitted changes before deploy. [\#1278](https://github.com/acquia/blt/pull/1278) ([bobbygryzynger](https://github.com/bobbygryzynger))
+- Fixes \#1218: Update acsf-setup.md with subprofile guidance. [\#1271](https://github.com/acquia/blt/pull/1271) ([malikkotob](https://github.com/malikkotob))
+- Replaces \#1132: Allow project.prefix to be overridden. [\#1259](https://github.com/acquia/blt/pull/1259) ([bobbygryzynger](https://github.com/bobbygryzynger))
+- Fixes instructions for configuring authsources and remote idp files. [\#1255](https://github.com/acquia/blt/pull/1255) ([dooleymatt](https://github.com/dooleymatt))
+- Update config split documentation [\#1240](https://github.com/acquia/blt/pull/1240) ([danepowell](https://github.com/danepowell))
+- Fixes \#1086: Auto-discovery of $site\_dir [\#1239](https://github.com/acquia/blt/pull/1239) ([malikkotob](https://github.com/malikkotob))
+- Documenting post-drupal-scaffold-cmd to applying patches [\#1208](https://github.com/acquia/blt/pull/1208) ([justinlevi](https://github.com/justinlevi))
+- Update mkdocs.yml with multisite docs [\#1207](https://github.com/acquia/blt/pull/1207) ([danepowell](https://github.com/danepowell))
+- Fixing ignore-existing.txt values. [\#1206](https://github.com/acquia/blt/pull/1206) ([grasmash](https://github.com/grasmash))
+
+
 ## [8.7.0-beta1](https://github.com/acquia/blt/tree/8.7.0-beta1) (2017-03-16)
 [Full Changelog](https://github.com/acquia/blt/compare/8.6.15...8.7.0-beta1)
 

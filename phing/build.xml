@@ -16,7 +16,8 @@
   <echo level="verbose">Setting memory allocation to ${php.memory_limit}</echo>
   <php expression="ini_set('memory_limit', '${php.memory_limit}');" level="verbose"/>
 
-  <!--@todo Warn if Windows is being used.-->
+  <!-- Add environment variables to "env." namespace. -->
+  <property environment="env" />
 
   <!-- Include task partials -->
 
@@ -38,14 +39,8 @@
   <!-- Contains BLT tasks. -->
   <import file="${phing.dir}/tasks/blt.xml"/>
 
-  <!-- Contains Continuous Integration tasks. -->
-  <import file="${phing.dir}/tasks/ci.xml"/>
-
   <!-- Contains tasks relevant to validation. E.g., code metrics. -->
   <import file="${phing.dir}/tasks/validate.xml"/>
-
-  <!-- Contains targets relevant to the execution of tests. E.g., Behat, jMeter. -->
-  <import file="${phing.dir}/tasks/tests.xml"/>
 
   <!-- Contains targets used for setting up environment. E.g., installing Drupal. -->
   <import file="${phing.dir}/tasks/setup.xml"/>
@@ -62,14 +57,11 @@
   <!-- Contains local syncing tasks. -->
   <import file="${phing.dir}/tasks/local-sync.xml"/>
 
-  <!-- Contains acsf tasks. -->
-  <import file="${phing.dir}/tasks/acsf.xml"/>
-
-  <!-- Contains Drupal VM tasks. -->
-  <import file="${phing.dir}/tasks/vm.xml"/>
-
   <!-- Contains Drupal SimpleSAMLphp tasks. -->
   <import file="${phing.dir}/tasks/simplesamlphp.xml"/>
+
+  <!-- Contains Drupal tasks. -->
+  <import file="${phing.dir}/tasks/drupal.xml"/>
 
   <!-- Contains tasks that fix custom code. -->
   <import file="${phing.dir}/tasks/fix.xml"/>
